@@ -6,21 +6,21 @@ from pymongo import MongoClient
 base_url = 'https://m.weibo.cn/api/container/getIndex?'
 headers = {
     'Host': 'm.weibo.cn',
-    'Referer': 'https://m.weibo.cn/u/2145291155',
+    'Referer': 'https://m.weibo.cn/u/2830678474',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
     'X-Requested-With': 'XMLHttpRequest',
 }
 client = MongoClient()
 db = client['weibo']
-collection = db['weibo2']
-max_page = 14
+collection = db['weibo']
+max_page = 10
 
 
 def get_page(page):
     params = {
         'type': 'uid',
-        'value': '2145291155',
-        'containerid': '1076032145291155',
+        'value': '2830678474',
+        'containerid': '1076032830678474',
         'page': page
     }
     url = base_url + urlencode(params)
@@ -34,7 +34,7 @@ def get_page(page):
 
 def parse_page(json):
     if json:
-        items = json.get('cards')
+        items = json.get('data').get('cards')
         for item in items:
             item = item.get('mblog')
             weibo = {}
