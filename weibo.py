@@ -27,23 +27,26 @@ def get_page(page):
     try:
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
-            return response.json()
+            return response.json(), page
     except requests.ConnectionError as e:
         print('Error', e.args)
 
 
-def parse_page(json):
+def parse_page(json, page: int):
     if json:
         items = json.get('data').get('cards')
-        for item in items:
-            item = item.get('mblog')
-            weibo = {}
-            weibo['id'] = item.get('id')
-            weibo['text'] = pq(item.get('text')).text()
-            weibo['attitudes'] = item.get('attitudes_count')
-            weibo['comments'] = item.get('comments_count')
-            weibo['reposts'] = item.get('reposts_count')
-            yield weibo
+        for index, item in enumerate(items):
+            if page == 1 and index == 1:
+                continue
+            else:
+                item = item.get('mblog')
+                weibo = {}
+                weibo['id'] = item.get('id')
+                weibo['text'] = pq(item.get('text')).text()
+                weibo['attitudes'] = item.get('attitudes_count')
+                weibo['comments'] = item.get('comments_count')
+                weibo['reposts'] = item.get('reposts_count')
+                yield weibo
 
 
 def save_to_mongo(result):
@@ -54,7 +57,7 @@ def save_to_mongo(result):
 if __name__ == '__main__':
     for page in range(1, max_page + 1):
         json = get_page(page)
-        results = parse_page(json)
+        results = parse_page(*json)
         for result in results:
             print(result)
-            save_to_mongo(result)
+            #save_to_mongo(result)
