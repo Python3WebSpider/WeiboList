@@ -60,4 +60,4 @@ if __name__ == '__main__':
         results = parse_page(*json)
         for result in results:
             print(result)
-            #save_to_mongo(result)
+            save_to_mongo(result)
