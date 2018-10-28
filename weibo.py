@@ -39,7 +39,7 @@ def parse_page(json, page: int):
             if page == 1 and index == 1:
                 continue
             else:
-                item = item.get('mblog')
+                item = item.get('mblog', {})
                 weibo = {}
                 weibo['id'] = item.get('id')
                 weibo['text'] = pq(item.get('text')).text()
