@@ -10,7 +10,10 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
     'X-Requested-With': 'XMLHttpRequest',
 }
-client = MongoClient()
+# Please replace the useradmin, mypassword, host, port with yours
+# sample: MdbURI = "mongodb://admin:admin123@localhost:27017/tracking?authSource=admin"
+MdbURI = "mongodb://[useradmin]:[mypassword]@[host][:27017]/tracking?authSource=admin"
+client = MongoClient(MdbURI)
 db = client['weibo']
 collection = db['weibo']
 max_page = 10
